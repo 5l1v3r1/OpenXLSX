@@ -228,33 +228,33 @@ set(OPENXLSX_IMPL_SOURCES
         )
 
 set(OPENXLSX_CXX_INTERFACE_HEADERS
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/OpenXLSX.h
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/XLDefinitions.h
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/XLDocument.h
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/XLWorkbook.h
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/XLSheet.h
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/XLWorksheet.h
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/XLCellReference.h
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/XLCell.h
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/XLCellValue.h
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/XLCellRange.h
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/XLChartsheet.h
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/XLRow.h
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/XLColumn.h
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers/XLException.h)
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/OpenXLSX.h
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/XLDefinitions.h
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/XLDocument.h
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/XLWorkbook.h
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/XLSheet.h
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/XLWorksheet.h
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/XLCellReference.h
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/XLCell.h
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/XLCellValue.h
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/XLCellRange.h
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/XLChartsheet.h
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/XLRow.h
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/XLColumn.h
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/headers/XLException.h)
 
 set(OPENXLSX_CXX_INTERFACE_SOURCES
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/sources/XLDocument.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/sources/XLWorkbook.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/sources/XLSheet.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/sources/XLWorksheet.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/sources/XLCellReference.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/sources/XLCell.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/sources/XLCellValue.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/sources/XLCellRange.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/sources/XLChartsheet.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/sources/XLRow.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/sources/XLColumn.cpp)
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/sources/XLDocument.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/sources/XLWorkbook.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/sources/XLSheet.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/sources/XLWorksheet.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/sources/XLCellReference.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/sources/XLCell.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/sources/XLCellValue.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/sources/XLCellRange.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/sources/XLChartsheet.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/sources/XLRow.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces/sources/XLColumn.cpp)
 
 #=======================================================================================================================
 # Generate object library
@@ -270,7 +270,7 @@ target_include_directories(OpenXLSX-objs
         PRIVATE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/implementation/headers>
         PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/interfaces/c++/headers>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/interfaces/headers>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>      # For export header
         )
 
