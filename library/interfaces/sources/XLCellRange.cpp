@@ -6,6 +6,7 @@
 
 #include "XLCellRange.hpp"
 #include "XLCellRange_Impl.hpp"
+#include "XLCell_Impl.hpp"
 
 using namespace OpenXLSX;
 
@@ -25,14 +26,10 @@ XLCellRange::XLCellRange(XLCellRange&& other) = default;
 
 XLCellRange::~XLCellRange() = default;
 
-XLCell XLCellRange::Cell(unsigned long row, unsigned int column) {
+XLCell XLCellRange::Cell(unsigned long row, unsigned int column) const {
 
-    return XLCell(*m_cellrange->Cell(row, column));
-}
-
-const XLCell XLCellRange::Cell(unsigned long row, unsigned int column) const {
-
-    return XLCell(*m_cellrange->Cell(row, column));
+    return XLCell(std::make_unique<Impl::XLCell>(m_cellrange->Cell(row, column)));
+    //return XLCell(*m_cellrange->Cell(row, column));
 }
 
 unsigned long XLCellRange::NumRows() const {

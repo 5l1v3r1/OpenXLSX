@@ -9,8 +9,8 @@
 
 using namespace OpenXLSX;
 
-XLCell::XLCell(Impl::XLCell& cell)
-        : m_cell(&cell) {
+XLCell::XLCell(std::unique_ptr<Impl::XLCell> cell)
+        : m_cell(std::move(cell)) {
 }
 
 XLValueType XLCell::ValueType() const {

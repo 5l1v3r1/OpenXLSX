@@ -164,14 +164,14 @@ namespace OpenXLSX::Impl
          * @param column The column with the XLCell
          * @return A reference to the XLCell object.
          */
-        XLCell* Cell(unsigned int column);
+        XLCell Cell(unsigned int column);
 
         /**
          * @brief Get the XLCell object at a specified column for this row.
          * @param column The column with the XLCell
          * @return A const reference to the XLCell object.
          */
-        const XLCell* Cell(unsigned int column) const;
+        const XLCell Cell(unsigned int column) const;
 
         /**
          * @brief Get the number of cells in the row.
@@ -189,13 +189,13 @@ namespace OpenXLSX::Impl
         XLWorksheet& m_parentWorksheet; /**< A pointer to the parent XLWorksheet object. */
         XMLNode m_rowNode; /**< The XMLNode object for the row. */
 
-        struct XLCellData
-        {
-            unsigned int cellIndex;
-            std::unique_ptr<XLCell> cellItem = nullptr;
-        };
-
-        std::vector<XLCellData> m_cells; /**< A vector with the XLCell objects. */
+//        struct XLCellData
+//        {
+//            unsigned int cellIndex;
+//            std::unique_ptr<XLCell> cellItem = nullptr;
+//        };
+//
+//        std::vector<XLCellData> m_cells; /**< A vector with the XLCell objects. */
     };
 
 }  // namespace OpenXLSX::Impl

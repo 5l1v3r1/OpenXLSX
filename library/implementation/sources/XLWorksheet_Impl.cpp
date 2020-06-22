@@ -113,7 +113,7 @@ Impl::XLWorksheet* Impl::XLWorksheet::Clone(const std::string& newName) {
  * @details Get te cell with the given cell reference. This is a convenience function, which calls the
  * cell(rowNumber, columnNumber) function.
  */
-Impl::XLCell* Impl::XLWorksheet::Cell(const XLCellReference& ref) {
+Impl::XLCell Impl::XLWorksheet::Cell(const XLCellReference& ref) {
 
     return Cell(ref.Row(), ref.Column());
 }
@@ -121,7 +121,7 @@ Impl::XLCell* Impl::XLWorksheet::Cell(const XLCellReference& ref) {
 /**
  * @details
  */
-const Impl::XLCell* Impl::XLWorksheet::Cell(const XLCellReference& ref) const {
+const Impl::XLCell Impl::XLWorksheet::Cell(const XLCellReference& ref) const {
 
     return Cell(ref.Row(), ref.Column());
 }
@@ -130,7 +130,7 @@ const Impl::XLCell* Impl::XLWorksheet::Cell(const XLCellReference& ref) const {
  * @details Get the cell with the given cell address. This is a convenience function, which calls the
  * cell(rowNumber, columnNumber) function.
  */
-Impl::XLCell* Impl::XLWorksheet::Cell(const std::string& address) {
+Impl::XLCell Impl::XLWorksheet::Cell(const std::string& address) {
 
     return Cell(XLCellReference(address));
 }
@@ -138,7 +138,7 @@ Impl::XLCell* Impl::XLWorksheet::Cell(const std::string& address) {
 /**
  * @details
  */
-const Impl::XLCell* Impl::XLWorksheet::Cell(const std::string& address) const {
+const Impl::XLCell Impl::XLWorksheet::Cell(const std::string& address) const {
 
     return Cell(XLCellReference(address));
 }
@@ -147,7 +147,7 @@ const Impl::XLCell* Impl::XLWorksheet::Cell(const std::string& address) const {
  * @details This function returns a pointer to an XLCell object in the worksheet. This particular overload
  * also serves as the main function, called by the other overloads.
  */
-Impl::XLCell* Impl::XLWorksheet::Cell(unsigned long rowNumber, unsigned int columnNumber) {
+Impl::XLCell Impl::XLWorksheet::Cell(unsigned long rowNumber, unsigned int columnNumber) {
     // If the requested Cell is outside the current Sheet Range, reset the m_lastCell Property accordingly.
     if (columnNumber > ColumnCount() || rowNumber > RowCount()) {
         if (columnNumber > ColumnCount())
@@ -167,7 +167,7 @@ Impl::XLCell* Impl::XLWorksheet::Cell(unsigned long rowNumber, unsigned int colu
  * @details
  * @throw XLException if rowNumber exceeds rowCount
  */
-const Impl::XLCell* Impl::XLWorksheet::Cell(unsigned long rowNumber, unsigned int columnNumber) const {
+const Impl::XLCell Impl::XLWorksheet::Cell(unsigned long rowNumber, unsigned int columnNumber) const {
 
     if (rowNumber > RowCount())
         throw XLException("Row " + to_string(rowNumber) + " does not exist!");
@@ -199,8 +199,8 @@ const Impl::XLCellRange Impl::XLWorksheet::Range() const {
  */
 Impl::XLCellRange Impl::XLWorksheet::Range(const XLCellReference& topLeft, const XLCellReference& bottomRight) {
     // Set the last Cell to some value, in order to create all objects in Range.
-    if (Cell(bottomRight)->ValueType() == XLValueType::Empty)
-        Cell(bottomRight)->Value().Clear();
+    if (Cell(bottomRight).ValueType() == XLValueType::Empty)
+        Cell(bottomRight).Value().Clear();
 
     return XLCellRange(*this, topLeft, bottomRight);
 }
@@ -570,24 +570,25 @@ void Impl::XLWorksheet::UpdateSheetName(const std::string& oldName, const std::s
     newNameTemp += '!';
 
     // ===== Iterate through all defined names
-    for (auto& row : m_rows) {
-        for (auto& cell : row.rowItem->m_cells) {
-            if (!cell.cellItem->HasFormula())
-                continue;
-
-            formula = cell.cellItem->GetFormula();
-
-            // ===== Skip if formula contains a '[' and ']' (means that the defined refers to external workbook)
-            if (formula.find('[') == string::npos && formula.find(']') == string::npos) {
-
-                // ===== For all instances of the old sheet name in the formula, replace with the new name.
-                while (formula.find(oldNameTemp) != string::npos) {
-                    formula.replace(formula.find(oldNameTemp), oldNameTemp.length(), newNameTemp);
-                }
-                cell.cellItem->SetFormula(formula);
-            }
-        }
-    }
+    //TODO: Be sure to un-comment this section again
+//    for (auto& row : m_rows) {
+//        for (auto& cell : row.rowItem->m_cells) {
+//            if (!cell.cellItem->HasFormula())
+//                continue;
+//
+//            formula = cell.cellItem->GetFormula();
+//
+//            // ===== Skip if formula contains a '[' and ']' (means that the defined refers to external workbook)
+//            if (formula.find('[') == string::npos && formula.find(']') == string::npos) {
+//
+//                // ===== For all instances of the old sheet name in the formula, replace with the new name.
+//                while (formula.find(oldNameTemp) != string::npos) {
+//                    formula.replace(formula.find(oldNameTemp), oldNameTemp.length(), newNameTemp);
+//                }
+//                cell.cellItem->SetFormula(formula);
+//            }
+//        }
+//    }
 }
 
 /**
@@ -626,7 +627,7 @@ void Impl::XLWorksheet::Export(const std::string& fileName, char decimal, char d
 
     for (unsigned long row = 1; row <= RowCount(); ++row) {
         for (unsigned int column = 1; column <= ColumnCount(); ++column) {
-            token = Cell(row, column)->Value().AsString();
+            token = Cell(row, column).Value().AsString();
             replace(token.begin(), token.end(), oldDecimal, decimal);
             file << token << delimiter;
         }
@@ -650,13 +651,13 @@ void Impl::XLWorksheet::Import(const std::string& fileName, const string& delimi
         unsigned int column = 1;
         for (auto& iter : tokenizer.Split()) {
             if (iter.IsInteger())
-                Cell(row, column)->Value().Set(iter.AsInteger());
+                Cell(row, column).Value().Set(iter.AsInteger());
             if (iter.IsFloat())
-                Cell(row, column)->Value().Set(iter.AsFloat());
+                Cell(row, column).Value().Set(iter.AsFloat());
             if (iter.IsString())
-                Cell(row, column)->Value().Set(iter.AsString());
+                Cell(row, column).Value().Set(iter.AsString());
             if (iter.IsBoolean()) {
-                Cell(row, column)->Value().Set(iter.AsBoolean());
+                Cell(row, column).Value().Set(iter.AsBoolean());
             }
             column++;
         }

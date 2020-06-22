@@ -12,34 +12,20 @@ XLWorksheet::XLWorksheet(Impl::XLSheet& sheet)
         : XLSheet(sheet) {
 }
 
-XLCell XLWorksheet::Cell(const XLCellReference& ref) {
+XLCell XLWorksheet::Cell(const XLCellReference& ref) const {
 
-    return XLCell(*dynamic_cast<Impl::XLWorksheet*>(m_sheet)->Cell(ref.Address()));
+    return XLCell(std::make_unique<Impl::XLCell>(dynamic_cast<Impl::XLWorksheet*>(m_sheet)->Cell(ref.Address())));
 }
 
-const XLCell XLWorksheet::Cell(const XLCellReference& ref) const {
+XLCell XLWorksheet::Cell(const std::string& address) const {
 
-    return XLCell(*dynamic_cast<Impl::XLWorksheet*>(m_sheet)->Cell(ref.Address()));
+    return XLCell(std::make_unique<Impl::XLCell>(dynamic_cast<Impl::XLWorksheet*>(m_sheet)->Cell(address)));
 }
 
-XLCell XLWorksheet::Cell(const std::string& address) {
+XLCell XLWorksheet::Cell(unsigned long rowNumber, unsigned int columnNumber) const {
 
-    return XLCell(*dynamic_cast<Impl::XLWorksheet*>(m_sheet)->Cell(address));
-}
-
-const XLCell XLWorksheet::Cell(const std::string& address) const {
-
-    return XLCell(*dynamic_cast<Impl::XLWorksheet*>(m_sheet)->Cell(address));
-}
-
-XLCell XLWorksheet::Cell(unsigned long rowNumber, unsigned int columnNumber) {
-
-    return XLCell(*dynamic_cast<Impl::XLWorksheet*>(m_sheet)->Cell(rowNumber, columnNumber));
-}
-
-const XLCell XLWorksheet::Cell(unsigned long rowNumber, unsigned int columnNumber) const {
-
-    return XLCell(*dynamic_cast<Impl::XLWorksheet*>(m_sheet)->Cell(rowNumber, columnNumber));
+    return XLCell(std::make_unique<Impl::XLCell>(dynamic_cast<Impl::XLWorksheet*>(m_sheet)->Cell(rowNumber,
+            columnNumber)));
 }
 
 XLCellReference XLWorksheet::FirstCell() const noexcept {

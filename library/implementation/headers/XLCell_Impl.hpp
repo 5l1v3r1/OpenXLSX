@@ -85,7 +85,7 @@ namespace OpenXLSX::Impl
 
         /**
          * @brief Constructor
-         * @param parent A pointer to the parent XLWorksheet object. Must not be nullptr.
+         * @param parent A reference to the parent XLWorksheet object.
          * @param cellNode A pointer to the XMLNode with the cell data. Must not be nullptr.
          */
         XLCell(XLWorksheet& parent, XMLNode cellNode);
@@ -103,7 +103,7 @@ namespace OpenXLSX::Impl
          * @param other The XLCell object to be moved
          * @note The move constructor has been deleted, as it makes no sense to move a cell.
          */
-        XLCell(XLCell&& other) noexcept;
+        XLCell(XLCell&& other) noexcept = default;
 
         /**
          * @brief Destructor
@@ -117,7 +117,7 @@ namespace OpenXLSX::Impl
          * @return A reference to the new object
          * @note Copies only the cell contents, not the pointer to parent worksheet etc.
          */
-        XLCell& operator=(const XLCell& other) = delete;
+        XLCell& operator=(const XLCell& other) = default;
 
         /**
          * @brief Move assignment operator [deleted]
@@ -249,7 +249,7 @@ namespace OpenXLSX::Impl
     private:
 
         // ===== Pointers to parent entities ===== //
-        XLWorksheet* m_parentWorksheet; /**< A pointer to the parent XLWorksheet object. */
+        XLWorksheet& m_parentWorksheet; /**< A pointer to the parent XLWorksheet object. */
 
         // ===== Cell entities ===== //
         XMLNode m_cellNode;              /**< A pointer to the root XMLNode for the cell. */

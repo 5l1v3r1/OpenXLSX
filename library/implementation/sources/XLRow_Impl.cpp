@@ -20,11 +20,11 @@ Impl::XLRow::XLRow(XLWorksheet& parent, XMLNode rowNode)
           m_rowNode(rowNode) {
 
     // Iterate through the Cell nodes and add cells to the m_cells hashmap
-    for (const auto& cell : m_rowNode.children()) {
-        auto& newCell = m_cells.emplace_back(XLCellData());
-        newCell.cellIndex = XLCellReference(cell.attribute("r").value()).Column();
-        newCell.cellItem = make_unique<XLCell>(m_parentWorksheet, cell);
-    }
+//    for (const auto& cell : m_rowNode.children()) {
+//        auto& newCell = m_cells.emplace_back(XLCellData());
+//        newCell.cellIndex = XLCellReference(cell.attribute("r").value()).Column();
+//        newCell.cellItem = make_unique<XLCell>(m_parentWorksheet, cell);
+//    }
 }
 
 /**
@@ -114,52 +114,86 @@ XMLNode Impl::XLRow::RowNode() const {
  * @details Return a pointer to the XLCell object at the given column number. If the cell does not exist, it will be
  * created.
  */
-Impl::XLCell* Impl::XLRow::Cell(unsigned int column) {
+Impl::XLCell Impl::XLRow::Cell(unsigned int column) {
 
     // ===== Search for the cell at the requested column
-    XLCellData searchItem;
-    searchItem.cellIndex = column;
-    auto dataItem = lower_bound(m_cells.begin(), m_cells.end(), searchItem,
-                                [](const XLCellData& a, const XLCellData& b) {
-                                    return a.cellIndex < b.cellIndex;
-                                });
+    auto cellRef  = XLCellReference(RowNumber(), column);
+    auto cellNode = std::invoke([&]() {
+        if (column > CellCount()) return XMLNode();
+        if (column == CellCount()) return m_rowNode.last_child();
+
+        return m_rowNode.find_child([&](const XMLNode node) {
+            return XLCellReference(node.attribute("r").as_string()) >= cellRef;
+        });
+    });
+
+
+    //XLCellData searchItem;
+    //searchItem.cellIndex = column;
+//    auto dataItem = lower_bound(m_cells.begin(), m_cells.end(), searchItem,
+//                                [](const XLCellData& a, const XLCellData& b) {
+//                                    return a.cellIndex < b.cellIndex;
+//                                });
 
     // ===== If cell does not exist, create it...
-    if (dataItem == m_cells.end() || dataItem->cellIndex > column) {
 
-        auto cellNode = XMLNode();
+    if (!cellNode || XLCellReference(cellNode.attribute("r").as_string()) > cellRef) {
 
-        // ===== Append or insert new cell node in the XML file
-        if (dataItem == m_cells.end())
+        if (!cellNode)
             cellNode = m_rowNode.append_child("c");
         else
-            cellNode = m_rowNode.insert_child_before("c", dataItem->cellItem->m_cellNode);
+            cellNode = m_rowNode.insert_child_before("c", cellNode);
 
-        // ===== Add the newly created node to the std::vector and update the dataItem iterator
-        dataItem = m_cells.insert(dataItem, XLCellData());
-        dataItem->cellIndex = column;
-        dataItem->cellItem = make_unique<XLCell>(m_parentWorksheet, cellNode);
-
-        // ===== Set the correct address of the newly created cell node
-        cellNode.append_attribute("r").set_value(XLCellReference(RowNumber(), column).Address().c_str());
-
+        cellNode.append_attribute("r").set_value(cellRef.Address().c_str());
     }
 
-    return dataItem->cellItem.get();
+    return XLCell(m_parentWorksheet, cellNode);
+
+//    if (dataItem == m_cells.end() || dataItem->cellIndex > column) {
+//
+//        auto cellNode = XMLNode();
+//
+//        // ===== Append or insert new cell node in the XML file
+//        if (dataItem == m_cells.end())
+//            cellNode = m_rowNode.append_child("c");
+//        else
+//            cellNode = m_rowNode.insert_child_before("c", dataItem->cellItem->m_cellNode);
+//
+//        // ===== Add the newly created node to the std::vector and update the dataItem iterator
+//        dataItem = m_cells.insert(dataItem, XLCellData());
+//        dataItem->cellIndex = column;
+//        dataItem->cellItem = make_unique<XLCell>(m_parentWorksheet, cellNode);
+//
+//        // ===== Set the correct address of the newly created cell node
+//        cellNode.append_attribute("r").set_value(XLCellReference(RowNumber(), column).Address().c_str());
+//
+//    }
+
+//    return dataItem->cellItem.get();
 }
 
 /**
  * @details
  */
-const Impl::XLCell* Impl::XLRow::Cell(unsigned int column) const {
+const Impl::XLCell Impl::XLRow::Cell(unsigned int column) const {
 
-    auto result = find_if(m_cells.begin(), m_cells.end(), [=](const XLCellData& data) {
-        return data.cellIndex == column;
+    auto cellRef  = XLCellReference(RowNumber(), column);
+    auto cellNode = std::invoke([&]() {
+        if (column > CellCount()) return XMLNode();
+        if (column == CellCount()) return m_rowNode.last_child();
+
+        return m_rowNode.find_child([&](const XMLNode node) {
+            return XLCellReference(node.attribute("r").as_string()) >= cellRef;
+        });
     });
 
-    if (result == m_cells.end())
+//    auto result = find_if(m_cells.begin(), m_cells.end(), [=](const XLCellData& data) {
+//        return data.cellIndex == column;
+//    });
+
+    if (!cellNode)
         throw XLException("Cell does not exist!");
-    return result->cellItem.get();
+    return XLCell(m_parentWorksheet, cellNode);
 
 }
 
@@ -168,5 +202,6 @@ const Impl::XLCell* Impl::XLRow::Cell(unsigned int column) const {
  */
 unsigned int Impl::XLRow::CellCount() const {
 
-    return static_cast<unsigned int>(m_cells.size());
+    return XLCellReference(m_rowNode.last_child().attribute("r").as_string()).Column();
+    //return static_cast<unsigned int>(m_cells.size());
 }

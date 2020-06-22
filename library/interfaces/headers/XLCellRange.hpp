@@ -96,15 +96,7 @@ namespace OpenXLSX
          * @param column
          * @return
          */
-        XLCell Cell(unsigned long row, unsigned int column);
-
-        /**
-         * @brief
-         * @param row
-         * @param column
-         * @return
-         */
-        const XLCell Cell(unsigned long row, unsigned int column) const;
+        XLCell Cell(unsigned long row, unsigned int column) const;
 
         /**
          * @brief

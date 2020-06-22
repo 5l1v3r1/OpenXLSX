@@ -44,14 +44,10 @@ void XLRow::SetHidden(bool state) {
     m_row->SetHidden(state);
 }
 
-XLCell XLRow::Cell(unsigned int column) {
+XLCell XLRow::Cell(unsigned int column) const {
 
-    return XLCell(*m_row->Cell(column));
-}
-
-const XLCell XLRow::Cell(unsigned int column) const {
-
-    return XLCell(*m_row->Cell(column));
+    //return XLCell(std::make_unique<Impl::XLCell>(m_cellrange->Cell(row, column)));
+    return XLCell(std::make_unique<Impl::XLCell>(m_row->Cell(column)));
 }
 
 unsigned int XLRow::CellCount() const {

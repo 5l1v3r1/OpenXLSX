@@ -28,34 +28,34 @@ using namespace OpenXLSX;
  *      -# Otherwise, determine the celltype based on the type attribute.
  */
 Impl::XLCell::XLCell(XLWorksheet& parent, XMLNode cellNode)
-        : m_parentWorksheet(&parent),
+        : m_parentWorksheet(parent),
           m_cellNode(cellNode),
           m_cellFormula(cellNode.child("f")),
           m_cellReference(XLCellReference(cellNode.attribute("r").value())),
           m_value(XLCellValue(*this)) {
-
-    // Empty constructor body
 }
 
+/**
+ * @details
+ */
 Impl::XLCell::XLCell(Impl::XLCell const& other)
         : m_parentWorksheet(other.m_parentWorksheet),
           m_cellNode(other.m_cellNode),
           m_cellFormula(other.m_cellFormula),
           m_cellReference(other.m_cellReference),
           m_value(XLCellValue(*this)) {
-
-    // Empty constructor body
 }
 
-Impl::XLCell::XLCell(Impl::XLCell&& other) noexcept
-        : m_parentWorksheet(std::move(other.m_parentWorksheet)),
-          m_cellNode(std::move(other.m_cellNode)),
-          m_cellFormula(std::move(other.m_cellFormula)),
-          m_cellReference(std::move(other.m_cellReference)),
-          m_value(XLCellValue(*this)) {
-
-    // Empty constructor body
-}
+/**
+ * @details
+ */
+//Impl::XLCell::XLCell(Impl::XLCell&& other) noexcept
+//        : m_parentWorksheet(other.m_parentWorksheet),
+//          m_cellNode(std::move(other.m_cellNode)),
+//          m_cellFormula(std::move(other.m_cellFormula)),
+//          m_cellReference(std::move(other.m_cellReference)),
+//          m_value(XLCellValue(*this)) {
+//}
 
 /**
  * @details This methods copies a range into a new location, with the top left cell being located in the target cell.
@@ -163,7 +163,7 @@ void Impl::XLCell::DeleteTypeAttribute() {
  */
 Impl::XLWorksheet* Impl::XLCell::Worksheet() {
 
-    return m_parentWorksheet;
+    return &m_parentWorksheet;
 }
 
 /**
@@ -171,7 +171,7 @@ Impl::XLWorksheet* Impl::XLCell::Worksheet() {
  */
 const Impl::XLWorksheet* Impl::XLCell::Worksheet() const {
 
-    return m_parentWorksheet;
+    return &m_parentWorksheet;
 }
 
 /**

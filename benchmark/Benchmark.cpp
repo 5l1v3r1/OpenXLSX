@@ -18,7 +18,7 @@ static void BM_WriteMatrix(benchmark::State& state) {
     auto arange = wks.Range(XLCellReference("A1"), XLCellReference(state.range(0), state.range(0)));
 
     for (auto _ : state) {
-        for (auto iter : arange) {
+        for (auto& iter : arange) {
             iter.Value().Set(3.1415);
         }
     }
@@ -43,7 +43,7 @@ static void BM_WriteColumns(benchmark::State& state) {
     auto arange = wks.Range(XLCellReference("A1"), XLCellReference(1048575, state.range(0)));
 
     for (auto _ : state) {
-        for (auto iter : arange) {
+        for (auto& iter : arange) {
             iter.Value().Set(3.1415);
         }
     }
@@ -68,7 +68,7 @@ static void BM_WriteRows(benchmark::State& state) {
     auto arange = wks.Range(XLCellReference("A1"), XLCellReference(state.range(0), 16383));
 
     for (auto _ : state) {
-        for (auto iter : arange) {
+        for (auto& iter : arange) {
             iter.Value().Set(3.1415);
         }
     }

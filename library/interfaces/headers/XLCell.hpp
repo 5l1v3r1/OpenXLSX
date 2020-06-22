@@ -69,7 +69,7 @@ namespace OpenXLSX
          * @brief
          * @param cell
          */
-        explicit XLCell(Impl::XLCell& cell);
+        explicit XLCell(std::unique_ptr<Impl::XLCell> cell);
 
         /**
          * @brief
@@ -127,7 +127,7 @@ namespace OpenXLSX
         const XLCellReference CellReference() const;
 
     private:
-        Impl::XLCell* m_cell; /**<  */
+        std::unique_ptr<Impl::XLCell> m_cell; /**<  */
     };
 }  // namespace OpenXLSX
 

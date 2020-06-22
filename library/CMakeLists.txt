@@ -29,7 +29,7 @@ endif()
 add_library(PugiXML INTERFACE)
 add_library(PugiXML::PugiXML ALIAS PugiXML)
 target_include_directories(PugiXML SYSTEM INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/_deps/PugiXML>)
-target_compile_definitions(PugiXML INTERFACE PUGIXML_NO_XPATH PUGIXML_HEADER_ONLY)
+target_compile_definitions(PugiXML INTERFACE PUGIXML_NO_XPATH PUGIXML_HEADER_ONLY) # PUGIXML_COMPACT)
 
 #=======================================================================================================================
 # Download and define Zippy library target
