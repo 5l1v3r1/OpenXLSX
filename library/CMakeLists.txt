@@ -58,7 +58,7 @@ target_compile_definitions(Zippy INTERFACE MINIZ_HEADER_FILE_ONLY)
 #=======================================================================================================================
 # Define library targets
 #=======================================================================================================================
-add_library(OpenXLSX-objs OBJECT "")
+add_library(OpenXLSX-objs OBJECT "" implementation/headers/XLXmlFile.hpp)
 add_library(OpenXLSX-static STATIC "")
 add_library(OpenXLSX-shared SHARED "")
 
