@@ -58,7 +58,7 @@ target_compile_definitions(Zippy INTERFACE MINIZ_HEADER_FILE_ONLY)
 #=======================================================================================================================
 # Define library targets
 #=======================================================================================================================
-add_library(OpenXLSX-objs OBJECT "" implementation/headers/XLXmlFile.hpp)
+add_library(OpenXLSX-objs OBJECT "")
 add_library(OpenXLSX-static STATIC "")
 add_library(OpenXLSX-shared SHARED "")
 
@@ -173,6 +173,8 @@ set(OPENXLSX_IMPL_HEADERS
         ${CMAKE_CURRENT_LIST_DIR}/implementation/headers/XLDefinitions_Impl.h
         ${CMAKE_CURRENT_LIST_DIR}/implementation/headers/XLException_Impl.h
         ${CMAKE_CURRENT_LIST_DIR}/implementation/headers/XLCellIterator_Impl.hpp
+        ${CMAKE_CURRENT_LIST_DIR}/implementation/headers/XLXmlFile_Impl.hpp
+        ${CMAKE_CURRENT_LIST_DIR}/implementation/headers/XLXmlData_Impl.hpp
         )
 
 set(OPENXLSX_IMPL_SOURCES
